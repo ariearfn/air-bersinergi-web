@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { categoryLabel, featuredPortfolioProjects } from '~/data/portfolio-sections'
+
 const client = useSupabaseClient()
 
 const { data: settings } = await useAsyncData('site-settings', async () => {
@@ -11,11 +13,6 @@ const { data: services } = await useAsyncData('services', async () => {
   return data || []
 })
 
-const { data: portfolio } = await useAsyncData('portfolio-featured', async () => {
-  const { data } = await client.from('portfolio').select('*').eq('is_visible', true).eq('is_featured', true).order('sort_order').limit(6)
-  return data || []
-})
-
 const { data: content } = await useAsyncData('site-content', async () => {
   const { data } = await client.from('site_content').select('*').eq('is_visible', true).order('sort_order')
   return data || []
@@ -23,6 +20,31 @@ const { data: content } = await useAsyncData('site-content', async () => {
 
 const heroContent = computed(() => content.value?.find((c: any) => c.section === 'hero'))
 const aboutContent = computed(() => content.value?.find((c: any) => c.section === 'about'))
+
+const clients = [
+  { name: 'Combiphar', logo: '/clients/combiphar.png' },
+  { name: 'KAI Services', logo: '/clients/kai-services.png' },
+  { name: 'Meditap', logo: '/clients/meditap.png' },
+  { name: 'Mbiz', logo: '/clients/mbiz.png' },
+  { name: 'NHTS', logo: '/clients/nhts.png' },
+  { name: 'DDT', logo: '/clients/ddt.png' },
+  { name: 'Revass', logo: '/clients/revass.png' },
+  { name: 'Adhi', logo: '/clients/adhi.png' },
+  { name: 'Kaho', logo: '/clients/kaho.png' },
+  { name: 'AM/NS Indonesia', logo: '/clients/amns-indonesia.png' },
+  { name: 'Tekpak Indonesia', logo: '/clients/tekpak.png' },
+  { name: 'Multifacade', logo: '/clients/multifacade.png' },
+  { name: 'HK', logo: '/clients/hk.png' },
+  { name: 'SPU', logo: '/clients/spu.png' },
+  { name: 'Total Bangun Persada', logo: '/clients/total-bangun-persada.png' },
+  { name: 'Shin Sam-Plus', logo: '/clients/shin-sam-plus.png' },
+  { name: 'Angkasa Bumi Cemerlang', logo: '/clients/angkasa-bumi.png' },
+  { name: 'Busana Apparel Group', logo: '/clients/busana-apparel.png' },
+  { name: 'Sika', logo: '/clients/sika.png' },
+  { name: 'PT. Inti Polymeta', logo: '/clients/inti-polymeta.png' },
+  { name: 'Unilever', logo: '/clients/unilever.png' },
+  { name: 'PT. Karya Inti Karton', logo: '/clients/karya-inti-karton.png' },
+]
 
 useSeoMeta({
   title: settings.value?.site_name || 'PT. Air Bersinergi',
@@ -33,15 +55,24 @@ useSeoMeta({
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-primary/95 to-primary text-primary-foreground py-24 lg:py-32">
-      <div class="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-      <div class="container relative">
+    <section class="relative min-h-[72vh] lg:min-h-[88vh] flex items-center text-primary-foreground overflow-hidden">
+      <img
+        src="/hero.png"
+        alt="Fasilitas industri dan infrastruktur pabrik"
+        class="absolute inset-0 w-full h-full object-cover object-center scale-105"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/35" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-secondary/15 blur-3xl" />
+
+      <div class="container relative py-24 lg:py-32">
         <div class="max-w-3xl">
           <UiBadge variant="secondary" class="mb-4">General Contractor & Supplier</UiBadge>
-          <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-6">
+          <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-6 drop-shadow-sm">
             {{ heroContent?.title || 'Solusi Terpercaya untuk Kebutuhan Industri Anda' }}
           </h1>
-          <p class="text-lg lg:text-xl text-primary-foreground/80 mb-8 leading-relaxed">
+          <p class="text-lg lg:text-xl text-primary-foreground/90 mb-8 leading-relaxed max-w-2xl">
             {{ heroContent?.subtitle || 'PT. Anugerah Insan Ridho Bersinergi bergerak dibidang pengadaan barang dan jasa dalam bidang industri, kontruksi, mekanikal, elektrikal, dan engineering.' }}
           </p>
           <div class="flex flex-wrap gap-4">
@@ -49,7 +80,7 @@ useSeoMeta({
               <UiButton size="lg" variant="secondary">Hubungi Kami</UiButton>
             </NuxtLink>
             <NuxtLink to="/layanan">
-              <UiButton size="lg" variant="outline" class="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+              <UiButton size="lg" variant="ghost" class="border border-white/30 text-white hover:bg-white/10 hover:text-white">
                 Lihat Layanan
               </UiButton>
             </NuxtLink>
@@ -162,39 +193,73 @@ useSeoMeta({
       </div>
     </section>
 
+    <SectionsProductCatalog />
+
     <!-- Portfolio -->
-    <section class="py-20">
+    <section class="py-20 bg-muted/30">
       <div class="container">
         <div class="text-center mb-12">
           <UiBadge class="mb-4">Portofolio</UiBadge>
-          <h2 class="text-3xl font-bold">Proyek Terbaru</h2>
-          <p class="text-muted-foreground mt-2">Beberapa proyek yang sudah kami kerjakan</p>
+          <h2 class="text-3xl md:text-4xl font-bold">Proyek Terbaru</h2>
+          <p class="text-muted-foreground mt-2 max-w-2xl mx-auto">
+            Dokumentasi pekerjaan proyek, service, dan pengadaan yang telah kami kerjakan
+          </p>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <UiCard v-for="project in portfolio" :key="project.id" class="overflow-hidden group">
-            <div class="aspect-video bg-muted relative overflow-hidden">
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+          <NuxtLink
+            v-for="project in featuredPortfolioProjects"
+            :key="`${project.slug}-${project.title}`"
+            :to="`/portofolio#${project.slug}`"
+            class="group block rounded-2xl border bg-card shadow-md ring-1 ring-border/60 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5 hover:ring-primary/25"
+          >
+            <div class="relative aspect-[4/3] overflow-hidden bg-muted">
               <img
-                v-if="project.cover_image"
-                :src="project.cover_image"
-                :alt="project.title"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                :src="project.image"
+                :alt="project.alt"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
               />
-              <div v-else class="w-full h-full flex items-center justify-center text-muted-foreground">
-                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              <UiBadge
+                :class="project.category === 'service' ? 'bg-secondary text-secondary-foreground' : 'bg-primary text-primary-foreground'"
+                class="absolute top-3 left-3 shadow-md"
+              >
+                {{ categoryLabel(project.category) }}
+              </UiBadge>
+              <div class="absolute inset-x-0 bottom-0 p-4 md:p-5">
+                <h3 class="text-white font-semibold text-sm md:text-base leading-snug line-clamp-2">
+                  {{ project.title }}
+                </h3>
+                <div
+                  :class="project.category === 'service' ? 'bg-secondary' : 'bg-primary'"
+                  class="mt-3 h-0.5 w-8 rounded-full transition-all duration-500 group-hover:w-14"
+                />
               </div>
             </div>
-            <div class="p-4">
-              <h3 class="font-semibold mb-1">{{ project.title }}</h3>
-              <p v-if="project.client_name" class="text-sm text-muted-foreground">{{ project.client_name }}</p>
-            </div>
-          </UiCard>
-        </div>
-        <div class="text-center mt-8">
-          <NuxtLink to="/portofolio">
-            <UiButton variant="outline">Lihat Semua Proyek</UiButton>
           </NuxtLink>
+        </div>
+
+        <div class="text-center mt-10">
+          <NuxtLink to="/portofolio">
+            <UiButton size="lg" variant="outline">Lihat Semua Proyek</UiButton>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients -->
+    <section class="py-20 bg-muted/50">
+      <div class="container">
+        <div class="text-center mb-12">
+          <UiBadge class="mb-4">Klien Kami</UiBadge>
+          <h2 class="text-3xl font-bold">Dipercaya Oleh</h2>
+          <p class="text-muted-foreground mt-2">Perusahaan-perusahaan yang telah bekerja sama dengan kami</p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 items-center">
+          <div v-for="client in clients" :key="client.name" class="flex items-center justify-center p-6 bg-background rounded-xl border hover:shadow-md transition-shadow aspect-[4/3]">
+            <img :src="client.logo" :alt="client.name" class="max-h-24 max-w-[80%] object-contain grayscale hover:grayscale-0 transition-all" />
+          </div>
         </div>
       </div>
     </section>

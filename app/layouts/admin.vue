@@ -31,9 +31,7 @@ async function logout() {
     >
       <div class="flex items-center h-16 px-4 border-b">
         <NuxtLink to="/admin" class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-            AIR
-          </div>
+          <img src="/logo.png" alt="Air Bersinergi" class="h-11 w-auto" />
           <span v-if="sidebarOpen" class="font-semibold text-sm">Admin CMS</span>
         </NuxtLink>
       </div>

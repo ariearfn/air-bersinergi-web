@@ -20,9 +20,7 @@ const isActive = (href: string) => {
   <header class="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
     <div class="container flex h-16 items-center justify-between">
       <NuxtLink to="/" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
-          AIR
-        </div>
+        <img src="/logo.png" alt="Air Bersinergi" class="h-14 w-auto" />
         <div class="hidden sm:block">
           <p class="font-bold text-sm leading-tight">PT. Air Bersinergi</p>
           <p class="text-xs text-muted-foreground">General Contractor & Supplier</p>

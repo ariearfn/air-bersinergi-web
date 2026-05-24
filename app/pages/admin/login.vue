@@ -42,9 +42,7 @@ async function login() {
   <div class="min-h-screen flex items-center justify-center bg-muted/30 p-4">
     <div class="w-full max-w-sm">
       <div class="text-center mb-8">
-        <div class="w-16 h-16 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl mx-auto mb-4">
-          AIR
-        </div>
+        <img src="/logo.png" alt="Air Bersinergi" class="h-24 w-auto mx-auto mb-4" />
         <h1 class="text-2xl font-bold">Admin CMS</h1>
         <p class="text-sm text-muted-foreground mt-1">PT. Air Bersinergi</p>
       </div>

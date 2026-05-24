@@ -8,9 +8,7 @@ const currentYear = new Date().getFullYear()
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
-              AIR
-            </div>
+            <img src="/logo.png" alt="Air Bersinergi" class="h-14 w-auto" />
             <div>
               <p class="font-bold text-sm">PT. Anugerah Insan Ridho Bersinergi</p>
               <p class="text-xs text-muted-foreground">General Contractor & Supplier</p>
