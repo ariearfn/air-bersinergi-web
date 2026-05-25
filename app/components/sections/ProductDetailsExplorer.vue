@@ -163,15 +163,26 @@ watch(() => route.hash, syncFromHash)
         </UiCard>
       </div>
 
-      <UiCard class="mt-12 p-6 md:p-8 border-0 bg-muted/40 text-center">
-        <p class="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-          Info lebih lanjut mengenai produk sesuai permintaan customer, hubungi melalui email
-          dan kontak resmi kami.
-        </p>
-        <NuxtLink to="/kontak" class="inline-block mt-5">
-          <UiButton>Hubungi Kami</UiButton>
-        </NuxtLink>
-      </UiCard>
+      <div class="mt-14 relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-8 md:p-12 text-center">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsl(var(--secondary)/0.3),transparent_60%)]" />
+        <div class="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-white/5 blur-2xl" />
+        <div class="relative">
+          <h3 class="text-xl md:text-2xl font-bold text-primary-foreground">
+            Butuh Produk Sesuai Kebutuhan?
+          </h3>
+          <p class="mt-3 text-primary-foreground/80 leading-relaxed max-w-xl mx-auto">
+            Info lebih lanjut mengenai produk sesuai permintaan customer, hubungi melalui email dan kontak resmi kami.
+          </p>
+          <NuxtLink to="/kontak" class="inline-block mt-6">
+            <UiButton size="lg" variant="secondary" class="font-semibold shadow-lg hover:shadow-xl transition-shadow">
+              Hubungi Kami
+              <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </UiButton>
+          </NuxtLink>
+        </div>
+      </div>
     </div>
   </section>
 </template>

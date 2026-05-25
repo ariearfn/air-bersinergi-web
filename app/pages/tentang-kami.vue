@@ -53,72 +53,56 @@ useSeoMeta({
     </section>
 
     <!-- Company Info -->
-    <section class="py-16">
+    <section class="py-16 md:py-20">
       <div class="container">
-        <div class="grid lg:grid-cols-2 gap-12">
-          <div>
-            <h2 class="text-2xl font-bold mb-4">Profil Perusahaan</h2>
-            <p class="text-muted-foreground leading-relaxed mb-6">
-              PT. Anugerah Insan Ridho Bersinergi merupakan perusahaan General Contractor and Supplier yang bergerak dibidang pengadaan barang dan jasa dalam bidang industri, kontruksi, mekanikal, elektrikal, dan engineering.
-            </p>
-            <p class="text-muted-foreground leading-relaxed">
-              Perusahaan kami menawarkan kerja sama dengan berbagai perusahaan nasional, dan instansi pemerintah berdasarkan bidang keahlian perusahaan.
-            </p>
-          </div>
-          <div class="space-y-4">
-            <UiCard class="p-4">
-              <div class="flex justify-between">
-                <span class="text-sm text-muted-foreground">Nama Perusahaan</span>
-                <span class="text-sm font-medium">PT. Anugerah Insan Ridho Bersinergi</span>
-              </div>
-            </UiCard>
-            <UiCard class="p-4">
-              <div class="flex justify-between">
-                <span class="text-sm text-muted-foreground">Akta Notaris</span>
-                <span class="text-sm font-medium">6 / 3 Juni 2024</span>
-              </div>
-            </UiCard>
-            <UiCard class="p-4">
-              <div class="flex justify-between">
-                <span class="text-sm text-muted-foreground">NPWP</span>
-                <span class="text-sm font-medium">206691917470000</span>
-              </div>
-            </UiCard>
-            <UiCard class="p-4">
-              <div class="flex justify-between">
-                <span class="text-sm text-muted-foreground">Bidang Usaha</span>
-                <span class="text-sm font-medium">Industry, Construction, Mechanical, Electrical, Safety, Engineering</span>
-              </div>
-            </UiCard>
-          </div>
-        </div>
+        <SectionsCompanyProfileSection />
       </div>
     </section>
 
     <!-- Visi & Misi -->
-    <section class="py-16 bg-muted/50">
+    <section class="py-16 md:py-20">
       <div class="container">
-        <div class="grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 class="text-2xl font-bold mb-4 text-primary">Visi</h2>
+        <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+          <!-- Visi -->
+          <div class="relative rounded-2xl border border-border/50 bg-card p-8 md:p-10">
+            <div class="absolute top-0 left-8 right-8 h-0.5 bg-gradient-to-r from-primary to-primary/30 rounded-full" />
+            <div class="mb-5 flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold tracking-tight text-foreground">Visi</h2>
+            </div>
             <p class="text-muted-foreground leading-relaxed">
               Menjadi sebuah Perusahaan yang produktif, tangguh dan terpercaya pada setiap bidang yang dikerjakan dan selalu mengedepankan keselamatan dan kesehatan kerja.
             </p>
           </div>
-          <div>
-            <h2 class="text-2xl font-bold mb-4 text-secondary">Misi</h2>
-            <ul class="space-y-3">
+
+          <!-- Misi -->
+          <div class="relative rounded-2xl border border-border/50 bg-card p-8 md:p-10">
+            <div class="absolute top-0 left-8 right-8 h-0.5 bg-gradient-to-r from-secondary to-secondary/30 rounded-full" />
+            <div class="mb-5 flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold tracking-tight text-foreground">Misi</h2>
+            </div>
+            <ul class="space-y-4">
               <li class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
-                <p class="text-muted-foreground text-sm leading-relaxed">Memberikan kepuasan dan kepercayaan konsumen atas produk dan jasa yang berkualitas melalui keunggulan sistem management dan sumber daya manusia yang handal</p>
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-[11px] font-semibold text-secondary">1</span>
+                <p class="text-sm text-muted-foreground leading-relaxed">Memberikan kepuasan dan kepercayaan konsumen atas produk dan jasa yang berkualitas melalui keunggulan sistem management dan sumber daya manusia yang handal</p>
               </li>
               <li class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
-                <p class="text-muted-foreground text-sm leading-relaxed">Mempersiapkan tenaga kerja profesional, terampil, cermat dan santun</p>
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-[11px] font-semibold text-secondary">2</span>
+                <p class="text-sm text-muted-foreground leading-relaxed">Mempersiapkan tenaga kerja profesional, terampil, cermat dan santun</p>
               </li>
               <li class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
-                <p class="text-muted-foreground text-sm leading-relaxed">Menerapkan kejujuran, integritas, dan etika bisnis ke dalam semua aspek bisnis</p>
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-[11px] font-semibold text-secondary">3</span>
+                <p class="text-sm text-muted-foreground leading-relaxed">Menerapkan kejujuran, integritas, dan etika bisnis ke dalam semua aspek bisnis</p>
               </li>
             </ul>
           </div>
@@ -201,26 +185,32 @@ useSeoMeta({
     </section>
 
     <!-- Team -->
-    <section v-if="team && team.length > 0" class="py-16 bg-muted/50">
+    <section v-if="team && team.length > 0" class="py-16 md:py-20">
       <div class="container">
         <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold">Tim Kami</h2>
-          <p class="text-muted-foreground mt-2">Tenaga profesional yang siap melayani Anda</p>
+          <UiBadge variant="outline" class="mb-4">Tim</UiBadge>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Tim Kami</h2>
+          <p class="text-muted-foreground mt-3 max-w-lg mx-auto">Tenaga profesional yang siap melayani Anda</p>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <UiCard v-for="member in team" :key="member.id" class="p-6 text-center">
-            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div
+            v-for="member in team"
+            :key="member.id"
+            class="group relative rounded-2xl border border-border/50 bg-card p-8 text-center transition-all duration-300 hover:border-primary/20 hover:shadow-lg"
+          >
+            <div class="absolute top-0 left-8 right-8 h-0.5 rounded-full bg-gradient-to-r from-primary/60 to-secondary/60 opacity-0 transition-opacity group-hover:opacity-100" />
+            <div class="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 ring-1 ring-primary/10 transition-transform duration-300 group-hover:scale-105">
               <img
                 v-if="member.photo_url"
                 :src="member.photo_url"
                 :alt="member.name"
-                class="w-full h-full rounded-full object-cover"
+                class="h-full w-full rounded-2xl object-cover"
               />
               <span v-else class="text-2xl font-bold text-primary">{{ member.name.charAt(0) }}</span>
             </div>
-            <h3 class="font-semibold">{{ member.name }}</h3>
-            <p class="text-sm text-muted-foreground">{{ member.role }}</p>
-          </UiCard>
+            <h3 class="text-lg font-semibold text-foreground">{{ member.name }}</h3>
+            <p class="mt-1 text-sm text-muted-foreground">{{ member.role }}</p>
+          </div>
         </div>
       </div>
     </section>

@@ -57,3 +57,19 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+@layer utilities {
+  .scroll-fade {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out will-change-[opacity,transform];
+  }
+
+  .scroll-fade-visible {
+    @apply opacity-100 translate-y-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-fade {
+    @apply opacity-100 translate-y-0 transition-none;
+  }
+}

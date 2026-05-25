@@ -22,7 +22,7 @@ const contactTeam = [
     name: 'Afif',
     email: 'afif@airbersinergi.com',
     phone: '+62 895 4213 92455',
-    whatsapp: '6289542139245',
+    whatsapp: '62895421392455',
     initials: 'AF',
   },
   {
@@ -197,7 +197,7 @@ useSeoMeta({
                         <span class="truncate">{{ person.email }}</span>
                       </a>
                       <a
-                        :href="`https://wa.me/${person.whatsapp}`"
+                        :href="`https://wa.me/${person.whatsapp}?text=Halo%20${encodeURIComponent(person.name)}%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20PT.%20Air%20Bersinergi.`"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="inline-flex items-center gap-2 rounded-lg border bg-green-50 px-3 py-2 text-xs font-medium text-green-700 hover:bg-green-100 hover:border-green-200 transition-colors"
@@ -230,7 +230,7 @@ useSeoMeta({
             </div>
 
             <a
-              href="https://wa.me/6289542139245"
+              href="https://wa.me/62895421392455?text=Halo%2C%20saya%20ingin%20bertanya%20mengenai%20layanan%20PT.%20Air%20Bersinergi."
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center justify-center gap-2.5 w-full p-4 rounded-2xl bg-green-600 text-white font-semibold shadow-lg shadow-green-600/20 hover:bg-green-700 hover:shadow-green-700/25 transition-all duration-300 hover:-translate-y-0.5"

@@ -50,37 +50,46 @@ useSeoMeta({
   title: settings.value?.site_name || 'PT. Air Bersinergi',
   description: settings.value?.site_description,
 })
+
+useHead({
+  link: [
+    { rel: 'preload', as: 'image', href: '/hero-hd.jpg', fetchpriority: 'high' },
+  ],
+})
 </script>
 
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="relative min-h-[72vh] lg:min-h-[88vh] flex items-center text-primary-foreground overflow-hidden">
+    <section class="relative min-h-[80vh] lg:min-h-[92vh] flex items-center text-primary-foreground overflow-hidden isolate">
       <img
-        src="/hero.png"
-        alt="Fasilitas industri dan infrastruktur pabrik"
-        class="absolute inset-0 w-full h-full object-cover object-center scale-105"
+        src="/hero-hd.jpg"
+        alt="Kompleks industri dengan perpipaan dan infrastruktur pabrik"
+        class="absolute inset-0 h-full w-full object-cover object-[center_42%] scale-105 saturate-[0.85] contrast-[1.05]"
         fetchpriority="high"
+        decoding="async"
       />
-      <div class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/35" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-secondary/15 blur-3xl" />
+      <div class="absolute inset-0 bg-black/25" />
+      <div class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/30" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
+      <div class="pointer-events-none absolute -top-28 -right-28 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
+      <div class="pointer-events-none absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-primary/25 blur-3xl" />
 
-      <div class="container relative py-24 lg:py-32">
+      <div class="container relative z-10 py-24 lg:py-32">
         <div class="max-w-3xl">
-          <UiBadge variant="secondary" class="mb-4">General Contractor & Supplier</UiBadge>
-          <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-6 drop-shadow-sm">
+          <UiBadge variant="secondary" class="mb-5 shadow-lg">General Contractor & Supplier</UiBadge>
+          <h1 class="text-4xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] mb-6 drop-shadow-md">
             {{ heroContent?.title || 'Solusi Terpercaya untuk Kebutuhan Industri Anda' }}
           </h1>
-          <p class="text-lg lg:text-xl text-primary-foreground/90 mb-8 leading-relaxed max-w-2xl">
+          <p class="text-lg lg:text-xl text-primary-foreground/95 mb-9 leading-relaxed max-w-2xl drop-shadow-sm">
             {{ heroContent?.subtitle || 'PT. Anugerah Insan Ridho Bersinergi bergerak dibidang pengadaan barang dan jasa dalam bidang industri, kontruksi, mekanikal, elektrikal, dan engineering.' }}
           </p>
           <div class="flex flex-wrap gap-4">
             <NuxtLink to="/kontak">
-              <UiButton size="lg" variant="secondary">Hubungi Kami</UiButton>
+              <UiButton size="lg" variant="secondary" class="shadow-lg">Hubungi Kami</UiButton>
             </NuxtLink>
             <NuxtLink to="/layanan">
-              <UiButton size="lg" variant="ghost" class="border border-white/30 text-white hover:bg-white/10 hover:text-white">
+              <UiButton size="lg" variant="ghost" class="border border-white/40 bg-white/5 text-white backdrop-blur-sm hover:bg-white/15 hover:text-white">
                 Lihat Layanan
               </UiButton>
             </NuxtLink>
@@ -127,41 +136,7 @@ useSeoMeta({
               <UiButton variant="outline">Selengkapnya</UiButton>
             </NuxtLink>
           </div>
-          <div class="bg-muted rounded-2xl p-8 space-y-4">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-semibold">Kualitas Terjamin</h4>
-                <p class="text-sm text-muted-foreground">Komitmen kuat menghasilkan produk berkualitas</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-semibold">Keselamatan Kerja</h4>
-                <p class="text-sm text-muted-foreground">Mengedepankan K3 di setiap proyek</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-semibold">Tim Profesional</h4>
-                <p class="text-sm text-muted-foreground">Tenaga kerja terampil, cermat dan santun</p>
-              </div>
-            </div>
-          </div>
+          <SectionsAboutHighlights />
         </div>
       </div>
     </section>
@@ -174,16 +149,13 @@ useSeoMeta({
           <h2 class="text-3xl font-bold">Bidang Keahlian</h2>
           <p class="text-muted-foreground mt-2 max-w-2xl mx-auto">Kami siap memberikan produk dan jasa berdasarkan bidang yang kami tekuni</p>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <UiCard v-for="service in services" :key="service.id" class="p-6 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <h3 class="font-semibold text-lg mb-2">{{ service.title }}</h3>
-            <p class="text-sm text-muted-foreground">{{ service.description }}</p>
-          </UiCard>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+          <SectionsServiceExpertiseCard
+            v-for="(service, index) in services"
+            :key="service.id"
+            :service="service"
+            :index="index"
+          />
         </div>
         <div class="text-center mt-8">
           <NuxtLink to="/layanan">
@@ -206,7 +178,7 @@ useSeoMeta({
           </p>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7 scroll-fade-stagger">
           <NuxtLink
             v-for="project in featuredPortfolioProjects"
             :key="`${project.slug}-${project.title}`"
@@ -249,18 +221,14 @@ useSeoMeta({
     </section>
 
     <!-- Clients -->
-    <section class="py-20 bg-muted/50">
+    <section class="py-14 md:py-16 bg-background overflow-hidden">
       <div class="container">
-        <div class="text-center mb-12">
+        <div class="text-center mb-8 md:mb-10">
           <UiBadge class="mb-4">Klien Kami</UiBadge>
           <h2 class="text-3xl font-bold">Dipercaya Oleh</h2>
           <p class="text-muted-foreground mt-2">Perusahaan-perusahaan yang telah bekerja sama dengan kami</p>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 items-center">
-          <div v-for="client in clients" :key="client.name" class="flex items-center justify-center p-6 bg-background rounded-xl border hover:shadow-md transition-shadow aspect-[4/3]">
-            <img :src="client.logo" :alt="client.name" class="max-h-24 max-w-[80%] object-contain grayscale hover:grayscale-0 transition-all" />
-          </div>
-        </div>
+        <SectionsClientLogoMarquee :clients="clients" />
       </div>
     </section>
 

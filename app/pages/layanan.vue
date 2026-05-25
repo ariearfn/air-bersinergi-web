@@ -26,17 +26,14 @@ useSeoMeta({
 
     <section class="py-16">
       <div class="container">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <UiCard v-for="service in services" :key="service.id" class="p-6 hover:shadow-lg transition-shadow">
-            <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">{{ service.title }}</h3>
-            <p class="text-muted-foreground text-sm leading-relaxed mb-4">{{ service.description }}</p>
-            <p v-if="service.long_description" class="text-muted-foreground text-sm leading-relaxed">{{ service.long_description }}</p>
-          </UiCard>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <SectionsServiceExpertiseCard
+            v-for="(service, index) in services"
+            :key="service.id"
+            :service="service"
+            :index="index"
+            detailed
+          />
         </div>
 
         <div v-if="!services || services.length === 0" class="text-center py-12">
