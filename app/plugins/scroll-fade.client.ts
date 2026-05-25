@@ -4,6 +4,10 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+function isMobile() {
+  return window.innerWidth < 768
+}
+
 function observeScrollFadeElements(): IntersectionObserver | null {
   if (prefersReducedMotion()) {
     document.querySelectorAll('.scroll-fade').forEach((el) => {
@@ -11,6 +15,8 @@ function observeScrollFadeElements(): IntersectionObserver | null {
     })
     return null
   }
+
+  const mobile = isMobile()
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -23,8 +29,8 @@ function observeScrollFadeElements(): IntersectionObserver | null {
       })
     },
     {
-      threshold: 0.12,
-      rootMargin: '0px 0px -5% 0px',
+      threshold: mobile ? 0.02 : 0.12,
+      rootMargin: mobile ? '0px 0px 0px 0px' : '0px 0px -5% 0px',
     },
   )
 
@@ -62,12 +68,22 @@ function observeScrollFadeElements(): IntersectionObserver | null {
   return observer
 }
 
+function revealRemaining() {
+  document.querySelectorAll('.scroll-fade:not(.scroll-fade-visible)').forEach((el) => {
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight) {
+      el.classList.add(VISIBLE_CLASS)
+    }
+  })
+}
+
 export default defineNuxtPlugin((nuxtApp) => {
   let activeObserver: IntersectionObserver | null = null
 
   const refresh = () => {
     activeObserver?.disconnect()
     activeObserver = observeScrollFadeElements()
+    setTimeout(revealRemaining, 1500)
   }
 
   nuxtApp.hook('page:finish', () => {

@@ -60,7 +60,13 @@
 
 @layer utilities {
   .scroll-fade {
-    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out will-change-[opacity,transform];
+    @apply opacity-0 translate-y-4 transition-all duration-700 ease-out will-change-[opacity,transform];
+  }
+
+  @media (min-width: 768px) {
+    .scroll-fade {
+      @apply translate-y-8;
+    }
   }
 
   .scroll-fade-visible {
