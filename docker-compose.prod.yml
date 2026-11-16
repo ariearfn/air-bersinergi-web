@@ -1,0 +1,96 @@
+# Production stack on the shared VPS. DotaMind's Caddy owns 80/443 and reaches
+# the app over the external `dotamind_default` network.
+#   cp .env.production.example .env.production   # fill in secrets
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d
+name: airbersinergi
+
+x-app-env: &app-env
+  DATABASE_URL: postgresql://airbersinergi:${POSTGRES_PASSWORD}@postgres:5432/airbersinergi
+  BETTER_AUTH_URL: https://${APP_DOMAIN}
+  BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+  TZ: Asia/Jakarta
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '3'
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: airbersinergi
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: airbersinergi
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U airbersinergi -d airbersinergi']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    mem_limit: 256m
+    logging: *logging
+
+  # Applies pending migrations and seeds empty tables (idempotent), then exits.
+  migrate:
+    image: airbersinergi:${APP_TAG:-latest}
+    command: ['sh', '-c', 'npx drizzle-kit migrate && npx tsx server/db/seed.ts']
+    environment:
+      <<: *app-env
+      ADMIN_NAME: ${ADMIN_NAME:-Admin}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    logging: *logging
+
+  app:
+    image: airbersinergi:${APP_TAG:-latest}
+    restart: unless-stopped
+    environment: *app-env
+    volumes:
+      - uploads:/app/.data/uploads
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      - default
+      - proxy
+    mem_limit: 384m
+    logging: *logging
+
+  # Nightly pg_dump at 02:00 WIB; keeps 14 daily, 8 weekly, 6 monthly dumps in ./backups/db.
+  backup:
+    image: prodrigestivill/postgres-backup-local:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: airbersinergi
+      POSTGRES_USER: airbersinergi
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SCHEDULE: '0 2 * * *'
+      TZ: Asia/Jakarta
+      BACKUP_KEEP_DAYS: 14
+      BACKUP_KEEP_WEEKS: 8
+      BACKUP_KEEP_MONTHS: 6
+      HEALTHCHECK_PORT: 8080
+    volumes:
+      - ./backups/db:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 64m
+    logging: *logging
+
+volumes:
+  postgres_data:
+  uploads:
+
+networks:
+  proxy:
+    external: true
+    name: dotamind_default

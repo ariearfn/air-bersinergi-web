@@ -1,0 +1,19 @@
+# Append to ~/dotamind/deploy/Caddyfile on the VPS, then:
+#   docker exec dotamind-caddy-1 caddy reload --config /etc/caddy/Caddyfile
+airbersinergi.com {
+	encode zstd gzip
+	request_body {
+		max_size 10MB
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+	reverse_proxy airbersinergi-app-1:3000
+}
+
+www.airbersinergi.com {
+	redir https://airbersinergi.com{uri} permanent
+}
