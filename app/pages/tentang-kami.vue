@@ -144,7 +144,7 @@ useSeoMeta({
               <span class="flex size-12 items-center justify-center bg-primary text-white">
                 <UIcon :name="pillar.icon" class="size-6" />
               </span>
-              <span class="font-display text-4xl leading-none font-bold text-slate-100">
+              <span class="font-display text-4xl leading-none font-bold text-slate-300">
                 {{ String(i + 1).padStart(2, '0') }}
               </span>
             </div>

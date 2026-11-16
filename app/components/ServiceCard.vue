@@ -17,7 +17,7 @@ defineProps<{
       <span class="flex size-14 items-center justify-center bg-primary text-white transition-colors group-hover:bg-secondary">
         <UIcon :name="icon || 'i-lucide-wrench'" class="size-7" />
       </span>
-      <span class="font-display text-5xl leading-none font-bold text-slate-100 transition-colors group-hover:text-primary/15">
+      <span class="font-display text-5xl leading-none font-bold text-slate-300 transition-colors group-hover:text-primary/40">
         {{ String(index + 1).padStart(2, '0') }}
       </span>
     </div>
