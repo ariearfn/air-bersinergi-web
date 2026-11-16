@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Barlow', ui-sans-serif, sans-serif;
+
+  /* Logo blue */
+  --color-cobalt-50: #eef5fc;
+  --color-cobalt-100: #d8e8f7;
+  --color-cobalt-200: #b3d1ef;
+  --color-cobalt-300: #80b1e2;
+  --color-cobalt-400: #4a8bd0;
+  --color-cobalt-500: #2569b5;
+  --color-cobalt-600: #0b5394;
+  --color-cobalt-700: #0a447a;
+  --color-cobalt-800: #0c3a65;
+  --color-cobalt-900: #0e3154;
+  --color-cobalt-950: #091f37;
+
+  /* Logo red */
+  --color-signal-50: #fef2f3;
+  --color-signal-100: #fde3e6;
+  --color-signal-200: #fbccd2;
+  --color-signal-300: #f7a3ad;
+  --color-signal-400: #f16e7e;
+  --color-signal-500: #e8213a;
+  --color-signal-600: #d01a32;
+  --color-signal-700: #ae1429;
+  --color-signal-800: #911527;
+  --color-signal-900: #7b1626;
+  --color-signal-950: #450710;
+
+  /* Hero / dark band background */
+  --color-ink-900: #0b1220;
+  --color-ink-950: #060a14;
+}
+
+:root {
+  --ui-primary: var(--color-cobalt-600);
+  --ui-secondary: var(--color-signal-500);
+  --ui-radius: 0.375rem;
+}
+
+@layer utilities {
+  /* Fine blueprint grid used on dark industrial bands */
+  .bg-blueprint {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Diagonal hazard stripe accent */
+  .bg-hazard {
+    background-image: repeating-linear-gradient(-45deg, var(--color-signal-500) 0 10px, transparent 10px 20px);
+  }
+}
+
+/* Scroll reveal (see plugins/scroll-reveal.client.ts) */
+.reveal {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

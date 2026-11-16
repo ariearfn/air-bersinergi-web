@@ -1,218 +1,261 @@
 <script setup lang="ts">
-const client = useSupabaseClient()
+const { content } = useSite()
+const { data: team } = await useFetch('/api/team', { key: 'team', default: () => [] })
 
-const { data: team } = await useAsyncData('team', async () => {
-  const { data } = await client.from('team_members').select('*').eq('is_visible', true).order('sort_order')
-  return data || []
-})
+const facts = [
+  { icon: 'i-lucide-building-2', label: 'Nama Perusahaan', value: 'PT. Anugerah Insan Ridho Bersinergi' },
+  { icon: 'i-lucide-scroll-text', label: 'Akta Notaris', value: 'No. 6 / 3 Juni 2024' },
+  { icon: 'i-lucide-receipt-text', label: 'NPWP', value: '20.669.191.7-470.000' },
+  { icon: 'i-lucide-map-pin', label: 'Domisili', value: 'Kota Bekasi, Jawa Barat' }
+]
+
+const businessAreas = ['Industry', 'Construction', 'Mechanical', 'Electrical', 'Safety', 'Engineering']
+
+const missions = [
+  'Memberikan kepuasan dan kepercayaan konsumen atas produk dan jasa yang berkualitas melalui keunggulan sistem management dan sumber daya manusia yang handal.',
+  'Mempersiapkan tenaga kerja profesional, terampil, cermat dan santun.',
+  'Menerapkan kejujuran, integritas, dan etika bisnis ke dalam semua aspek bisnis.'
+]
 
 const qualityPillars = [
-  {
-    title: 'Produk Berkualitas',
-    description: 'Meneguhkan komitmen kuat untuk senantiasa menghasilkan produk berkualitas demi kepuasan pelanggan',
-    icon: 'quality',
-  },
-  {
-    title: 'Persyaratan Pelanggan',
-    description: 'Secara konsisten memenuhi atau melampaui semua persyaratan pelanggan',
-    icon: 'customer',
-  },
-  {
-    title: 'Perbaikan Berkelanjutan',
-    description: 'Melaksanakan proses perbaikan berkesinambungan pada mutu produk maupun layanan, biaya, pertanggung jawaban sosial dan moral',
-    icon: 'improvement',
-  },
+  { icon: 'i-lucide-badge-check', title: 'Produk Berkualitas', text: 'Meneguhkan komitmen kuat untuk senantiasa menghasilkan produk berkualitas demi kepuasan pelanggan.' },
+  { icon: 'i-lucide-handshake', title: 'Persyaratan Pelanggan', text: 'Secara konsisten memenuhi atau melampaui semua persyaratan pelanggan.' },
+  { icon: 'i-lucide-trending-up', title: 'Perbaikan Berkelanjutan', text: 'Melaksanakan proses perbaikan berkesinambungan pada mutu produk maupun layanan, biaya, pertanggung jawaban sosial dan moral.' }
 ]
 
 const k3Commitments = [
-  {
-    title: 'Kepatuhan Regulasi K3',
-    description: 'Bersungguh-sungguh mematuhi peraturan perundang-undangan tentang Kesehatan dan Keselamatan Kerja sebagai upaya pencegahan terjadinya kecelakaan dan penyakit akibat kerja.',
-  },
-  {
-    title: 'Lingkungan Kerja Aman',
-    description: 'Berkomitmen tinggi menjamin terjaganya Kesehatan dan Keselamatan Kerja bagi karyawan, pekerja, dan pihak lain di lingkungan kantor maupun lokasi kerja.',
-  },
+  { title: 'Kepatuhan Regulasi K3', text: 'Bersungguh-sungguh mematuhi peraturan perundang-undangan tentang Kesehatan dan Keselamatan Kerja sebagai upaya pencegahan terjadinya kecelakaan dan penyakit akibat kerja.' },
+  { title: 'Lingkungan Kerja Aman', text: 'Berkomitmen tinggi menjamin terjaganya Kesehatan dan Keselamatan Kerja bagi karyawan, pekerja, dan pihak lain di lingkungan kantor maupun lokasi kerja.' }
 ]
 
+function initials(name: string) {
+  return name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase()
+}
+
 useSeoMeta({
-  title: 'Tentang Kami - PT. Air Bersinergi',
-  description: 'General Contractor and Supplier yang bergerak dibidang pengadaan barang dan jasa',
+  title: 'Tentang Kami — PT. Anugerah Insan Ridho Bersinergi',
+  description: 'Profil, visi misi, kebijakan mutu, dan komitmen K3 PT. Anugerah Insan Ridho Bersinergi, General Contractor & Supplier di Bekasi.'
 })
 </script>
 
 <template>
   <div>
-    <!-- Header -->
-    <section class="bg-gradient-to-br from-primary/95 to-primary text-primary-foreground py-16">
-      <div class="container">
-        <UiBadge variant="secondary" class="mb-4">Tentang Kami</UiBadge>
-        <h1 class="text-4xl font-bold">PT. Anugerah Insan Ridho Bersinergi</h1>
-        <p class="text-primary-foreground/80 mt-2 max-w-2xl">General Contractor and Supplier</p>
-      </div>
-    </section>
+    <PageHero
+      eyebrow="Tentang Kami"
+      title="Membangun dengan Integritas"
+      description="General Contractor & Supplier untuk pengadaan barang dan jasa di bidang industri, konstruksi, mekanikal, elektrikal, dan engineering."
+      image="/portfolio/projects/fabrikasi-baja.webp"
+    />
 
-    <!-- Company Info -->
-    <section class="py-16 md:py-20">
-      <div class="container">
-        <SectionsCompanyProfileSection />
-      </div>
-    </section>
-
-    <!-- Visi & Misi -->
-    <section class="py-16 md:py-20">
-      <div class="container">
-        <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-          <!-- Visi -->
-          <div class="relative rounded-2xl border border-border/50 bg-card p-8 md:p-10">
-            <div class="absolute top-0 left-8 right-8 h-0.5 bg-gradient-to-r from-primary to-primary/30 rounded-full" />
-            <div class="mb-5 flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </div>
-              <h2 class="text-xl font-bold tracking-tight text-foreground">Visi</h2>
-            </div>
-            <p class="text-muted-foreground leading-relaxed">
-              Menjadi sebuah Perusahaan yang produktif, tangguh dan terpercaya pada setiap bidang yang dikerjakan dan selalu mengedepankan keselamatan dan kesehatan kerja.
+    <!-- Profile -->
+    <section class="py-24 md:py-32">
+      <UContainer class="grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <SectionHeading eyebrow="Profil Perusahaan" :title="content.about?.title || 'Perusahaan yang Produktif, Tangguh dan Terpercaya'" />
+          <div class="reveal mt-8 space-y-5 text-lg leading-relaxed text-slate-600">
+            <p>
+              {{ content.about?.body || 'PT. Anugerah Insan Ridho Bersinergi merupakan perusahaan General Contractor and Supplier yang bergerak dibidang pengadaan barang dan jasa dalam bidang industri, kontruksi, mekanikal, elektrikal, dan engineering.' }}
             </p>
           </div>
-
-          <!-- Misi -->
-          <div class="relative rounded-2xl border border-border/50 bg-card p-8 md:p-10">
-            <div class="absolute top-0 left-8 right-8 h-0.5 bg-gradient-to-r from-secondary to-secondary/30 rounded-full" />
-            <div class="mb-5 flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h2 class="text-xl font-bold tracking-tight text-foreground">Misi</h2>
-            </div>
-            <ul class="space-y-4">
-              <li class="flex items-start gap-3">
-                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-[11px] font-semibold text-secondary">1</span>
-                <p class="text-sm text-muted-foreground leading-relaxed">Memberikan kepuasan dan kepercayaan konsumen atas produk dan jasa yang berkualitas melalui keunggulan sistem management dan sumber daya manusia yang handal</p>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-[11px] font-semibold text-secondary">2</span>
-                <p class="text-sm text-muted-foreground leading-relaxed">Mempersiapkan tenaga kerja profesional, terampil, cermat dan santun</p>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-[11px] font-semibold text-secondary">3</span>
-                <p class="text-sm text-muted-foreground leading-relaxed">Menerapkan kejujuran, integritas, dan etika bisnis ke dalam semua aspek bisnis</p>
+          <div class="reveal mt-10">
+            <p class="font-display text-sm font-semibold tracking-[0.2em] text-slate-500 uppercase">
+              Bidang Usaha
+            </p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              <li
+                v-for="area in businessAreas"
+                :key="area"
+                class="border border-slate-300 px-4 py-2 font-display text-sm font-semibold tracking-wider text-slate-800 uppercase"
+              >
+                {{ area }}
               </li>
             </ul>
           </div>
         </div>
-      </div>
+
+        <dl class="reveal self-start border-t-4 border-primary bg-slate-50 lg:col-span-5">
+          <div
+            v-for="fact in facts"
+            :key="fact.label"
+            class="flex items-start gap-4 border-b border-slate-200 px-6 py-5 last:border-b-0"
+          >
+            <UIcon :name="fact.icon" class="mt-0.5 size-5 shrink-0 text-secondary" />
+            <div>
+              <dt class="font-display text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
+                {{ fact.label }}
+              </dt>
+              <dd class="mt-1 font-semibold text-slate-900">
+                {{ fact.value }}
+              </dd>
+            </div>
+          </div>
+        </dl>
+      </UContainer>
     </section>
 
-    <!-- Quality Policy -->
-    <section class="py-20 bg-muted/30 relative overflow-hidden">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--primary)/0.08),transparent_50%)]" />
-      <div class="container relative">
-        <div class="text-center max-w-3xl mx-auto mb-14">
-          <UiBadge class="mb-4">Kebijakan Mutu</UiBadge>
-          <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Komitmen Kualitas & Keselamatan</h2>
-          <p class="text-muted-foreground mt-4 leading-relaxed">
-            PT. Anugerah Insan Ridho Bersinergi sebagai General Contractor dan Supplier berkomitmen penuh
-            dalam setiap pengadaan barang dan jasa yang kami kerjakan.
+    <!-- Vision & mission -->
+    <section class="relative isolate overflow-hidden bg-ink-950 py-24 text-white md:py-32">
+      <div class="absolute inset-0 -z-10 bg-blueprint" />
+      <UContainer class="grid gap-14 lg:grid-cols-2 lg:gap-20">
+        <div class="reveal">
+          <div class="flex items-center gap-3">
+            <span class="h-0.5 w-8 bg-secondary" />
+            <h2 class="font-display text-sm font-semibold tracking-[0.25em] text-white/70 uppercase">
+              Visi
+            </h2>
+          </div>
+          <p class="mt-6 font-display text-3xl leading-tight font-semibold md:text-4xl">
+            Menjadi sebuah perusahaan yang <span class="text-signal-400">produktif, tangguh dan terpercaya</span> pada setiap bidang yang dikerjakan dan selalu mengedepankan keselamatan dan kesehatan kerja.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6 mb-12">
-          <UiCard
-            v-for="(pillar, index) in qualityPillars"
-            :key="pillar.title"
-            class="group relative p-6 border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-background/80 backdrop-blur-sm"
-          >
-            <div class="absolute top-0 left-6 right-6 h-1 rounded-full bg-gradient-to-r from-primary to-primary/40" />
-            <div class="flex items-center gap-3 mb-4 mt-2">
-              <div class="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                <svg v-if="pillar.icon === 'quality'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                </svg>
-                <svg v-else-if="pillar.icon === 'customer'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-              <span class="text-xs font-semibold text-muted-foreground">0{{ index + 1 }}</span>
-            </div>
-            <h3 class="font-semibold text-lg mb-2">{{ pillar.title }}</h3>
-            <p class="text-sm text-muted-foreground leading-relaxed">{{ pillar.description }}</p>
-          </UiCard>
-        </div>
-
-        <UiCard class="overflow-hidden border-0 shadow-md">
-          <div class="grid lg:grid-cols-5">
-            <div class="lg:col-span-2 bg-gradient-to-br from-primary to-primary/80 p-8 md:p-10 text-primary-foreground flex flex-col justify-center">
-              <div class="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center mb-6">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 class="text-2xl font-bold mb-3">Kesehatan & Keselamatan Kerja</h3>
-              <p class="text-primary-foreground/80 text-sm leading-relaxed">
-                Prioritas utama kami dalam setiap proyek — melindungi tenaga kerja dan lingkungan operasional.
+        <div class="reveal">
+          <div class="flex items-center gap-3">
+            <span class="h-0.5 w-8 bg-secondary" />
+            <h2 class="font-display text-sm font-semibold tracking-[0.25em] text-white/70 uppercase">
+              Misi
+            </h2>
+          </div>
+          <ol class="mt-6 divide-y divide-white/10 border-y border-white/10">
+            <li v-for="(mission, i) in missions" :key="i" class="flex gap-6 py-6">
+              <span class="font-display text-3xl leading-none font-bold text-cobalt-400">
+                {{ String(i + 1).padStart(2, '0') }}
+              </span>
+              <p class="leading-relaxed text-slate-300">
+                {{ mission }}
               </p>
+            </li>
+          </ol>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Quality policy -->
+    <section class="bg-slate-50 py-24 md:py-32">
+      <UContainer>
+        <SectionHeading
+          eyebrow="Kebijakan Mutu"
+          title="Komitmen Kualitas"
+          description="Sebagai General Contractor dan Supplier, kami berkomitmen penuh dalam setiap pengadaan barang dan jasa yang kami kerjakan."
+        />
+        <div class="mt-14 grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-3">
+          <article v-for="(pillar, i) in qualityPillars" :key="pillar.title" class="reveal bg-white p-8">
+            <div class="flex items-start justify-between">
+              <span class="flex size-12 items-center justify-center bg-primary text-white">
+                <UIcon :name="pillar.icon" class="size-6" />
+              </span>
+              <span class="font-display text-4xl leading-none font-bold text-slate-300">
+                {{ String(i + 1).padStart(2, '0') }}
+              </span>
             </div>
-            <div class="lg:col-span-3 p-8 md:p-10 space-y-6 bg-background">
-              <div
-                v-for="item in k3Commitments"
-                :key="item.title"
-                class="flex gap-4 p-4 rounded-xl bg-muted/40 hover:bg-muted/60 transition-colors"
-              >
-                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center shrink-0">
-                  <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 class="font-semibold mb-1">{{ item.title }}</h4>
-                  <p class="text-sm text-muted-foreground leading-relaxed">{{ item.description }}</p>
-                </div>
+            <h3 class="mt-6 font-display text-2xl font-bold tracking-wide text-slate-900 uppercase">
+              {{ pillar.title }}
+            </h3>
+            <p class="mt-3 leading-relaxed text-slate-600">
+              {{ pillar.text }}
+            </p>
+          </article>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- K3 -->
+    <section class="py-24 md:py-32">
+      <UContainer>
+        <div class="reveal grid overflow-hidden lg:grid-cols-5">
+          <div class="relative isolate flex flex-col justify-end overflow-hidden bg-secondary p-10 text-white lg:col-span-2">
+            <div class="absolute inset-x-0 top-0 h-2 bg-hazard opacity-40" />
+            <UIcon name="i-lucide-shield-check" class="size-14" />
+            <h2 class="mt-6 font-display text-4xl leading-none font-bold uppercase md:text-5xl">
+              Kesehatan & Keselamatan Kerja
+            </h2>
+            <p class="mt-4 leading-relaxed text-white/85">
+              Prioritas utama kami dalam setiap proyek — melindungi tenaga kerja dan lingkungan operasional.
+            </p>
+          </div>
+          <div class="divide-y divide-slate-200 border border-slate-200 lg:col-span-3 lg:border-l-0">
+            <div v-for="item in k3Commitments" :key="item.title" class="flex gap-5 p-8 md:p-10">
+              <UIcon name="i-lucide-circle-check" class="mt-1 size-6 shrink-0 text-secondary" />
+              <div>
+                <h3 class="font-display text-2xl font-bold tracking-wide text-slate-900 uppercase">
+                  {{ item.title }}
+                </h3>
+                <p class="mt-2 leading-relaxed text-slate-600">
+                  {{ item.text }}
+                </p>
               </div>
             </div>
           </div>
-        </UiCard>
-      </div>
+        </div>
+      </UContainer>
     </section>
 
     <!-- Team -->
-    <section v-if="team && team.length > 0" class="py-16 md:py-20">
-      <div class="container">
-        <div class="text-center mb-12">
-          <UiBadge variant="outline" class="mb-4">Tim</UiBadge>
-          <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Tim Kami</h2>
-          <p class="text-muted-foreground mt-3 max-w-lg mx-auto">Tenaga profesional yang siap melayani Anda</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div
+    <section v-if="team.length" class="border-t border-slate-200 bg-slate-50 py-24 md:py-32">
+      <UContainer>
+        <SectionHeading eyebrow="Tim Kami" title="Orang di Balik Pekerjaan" description="Tenaga profesional yang siap melayani kebutuhan proyek dan pengadaan Anda." />
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <article
             v-for="member in team"
             :key="member.id"
-            class="group relative rounded-2xl border border-border/50 bg-card p-8 text-center transition-all duration-300 hover:border-primary/20 hover:shadow-lg"
+            class="reveal group flex flex-col border border-slate-200 bg-white transition-shadow hover:shadow-xl hover:shadow-primary/10"
           >
-            <div class="absolute top-0 left-8 right-8 h-0.5 rounded-full bg-gradient-to-r from-primary/60 to-secondary/60 opacity-0 transition-opacity group-hover:opacity-100" />
-            <div class="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 ring-1 ring-primary/10 transition-transform duration-300 group-hover:scale-105">
+            <div
+              class="relative flex items-center justify-center overflow-hidden bg-ink-900"
+              :class="member.photoUrl ? 'aspect-[4/3]' : 'aspect-[16/7]'"
+            >
+              <div class="absolute inset-0 bg-blueprint" />
               <img
-                v-if="member.photo_url"
-                :src="member.photo_url"
+                v-if="member.photoUrl"
+                :src="member.photoUrl"
                 :alt="member.name"
-                class="h-full w-full rounded-2xl object-cover"
-              />
-              <span v-else class="text-2xl font-bold text-primary">{{ member.name.charAt(0) }}</span>
+                loading="lazy"
+                class="relative size-full object-cover"
+              >
+              <span v-else class="relative font-display text-7xl font-bold text-white/90">
+                {{ initials(member.name) }}
+              </span>
+              <span class="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-secondary transition-transform duration-300 group-hover:scale-x-100" />
             </div>
-            <h3 class="text-lg font-semibold text-foreground">{{ member.name }}</h3>
-            <p class="mt-1 text-sm text-muted-foreground">{{ member.role }}</p>
-          </div>
+            <div class="flex flex-1 flex-col p-6">
+              <h3 class="font-display text-2xl font-bold tracking-wide text-slate-900 uppercase">
+                {{ member.name }}
+              </h3>
+              <p v-if="member.role" class="mt-1 text-sm font-medium text-primary">
+                {{ member.role }}
+              </p>
+              <p v-if="member.bio" class="mt-3 text-sm leading-relaxed text-slate-600">
+                {{ member.bio }}
+              </p>
+              <div v-if="member.whatsapp || member.email" class="mt-auto flex gap-2 pt-6">
+                <UButton
+                  v-if="member.whatsapp"
+                  :to="waLink(member.whatsapp)"
+                  target="_blank"
+                  icon="i-simple-icons-whatsapp"
+                  color="success"
+                  variant="soft"
+                  size="sm"
+                >
+                  WhatsApp
+                </UButton>
+                <UButton
+                  v-if="member.email"
+                  :to="`mailto:${member.email}`"
+                  icon="i-lucide-mail"
+                  color="neutral"
+                  variant="outline"
+                  size="sm"
+                >
+                  Email
+                </UButton>
+              </div>
+            </div>
+          </article>
         </div>
-      </div>
+      </UContainer>
     </section>
+
+    <CtaBand />
   </div>
 </template>

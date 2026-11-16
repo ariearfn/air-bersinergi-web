@@ -1,248 +1,292 @@
 <script setup lang="ts">
-import { categoryLabel, featuredPortfolioProjects } from '~/data/portfolio-sections'
+const { settings, content } = useSite()
+const hero = computed(() => content.value.hero)
+const about = computed(() => content.value.about)
 
-const client = useSupabaseClient()
+const [{ data: services }, { data: groups }, { data: products }] = await Promise.all([
+  useFetch('/api/services', { key: 'services', default: () => [] }),
+  useFetch('/api/portfolio', { key: 'portfolio', default: () => [] }),
+  useFetch('/api/products', { key: 'products', default: () => [] })
+])
 
-const { data: settings } = await useAsyncData('site-settings', async () => {
-  const { data } = await client.from('site_settings').select('*').single()
-  return data
-})
+const featured = computed(() =>
+  groups.value
+    .flatMap(g => g.photos.filter(p => p.isFeatured).map(p => ({ ...p, category: g.category, slug: g.slug })))
+    .slice(0, 5)
+)
 
-const { data: services } = await useAsyncData('services', async () => {
-  const { data } = await client.from('services').select('*').eq('is_visible', true).order('sort_order')
-  return data || []
-})
+const projectCount = computed(() => groups.value.reduce((n, g) => n + g.photos.length, 0))
 
-const { data: content } = await useAsyncData('site-content', async () => {
-  const { data } = await client.from('site_content').select('*').eq('is_visible', true).order('sort_order')
-  return data || []
-})
+const stats = computed(() => [
+  { value: `${projectCount.value}+`, label: 'Proyek & Pekerjaan' },
+  { value: `${services.value.length}`, label: 'Bidang Keahlian' },
+  { value: '20+', label: 'Klien Korporat' },
+  { value: '100%', label: 'Komitmen K3' }
+])
 
-const heroContent = computed(() => content.value?.find((c: any) => c.section === 'hero'))
-const aboutContent = computed(() => content.value?.find((c: any) => c.section === 'about'))
-
-const clients = [
-  { name: 'Combiphar', logo: '/clients/combiphar.png' },
-  { name: 'KAI Services', logo: '/clients/kai-services.png' },
-  { name: 'Meditap', logo: '/clients/meditap.png' },
-  { name: 'Mbiz', logo: '/clients/mbiz.png' },
-  { name: 'NHTS', logo: '/clients/nhts.png' },
-  { name: 'DDT', logo: '/clients/ddt.png' },
-  { name: 'Revass', logo: '/clients/revass.png' },
-  { name: 'Adhi', logo: '/clients/adhi.png' },
-  { name: 'Kaho', logo: '/clients/kaho.png' },
-  { name: 'AM/NS Indonesia', logo: '/clients/amns-indonesia.png' },
-  { name: 'Tekpak Indonesia', logo: '/clients/tekpak.png' },
-  { name: 'Multifacade', logo: '/clients/multifacade.png' },
-  { name: 'HK', logo: '/clients/hk.png' },
-  { name: 'SPU', logo: '/clients/spu.png' },
-  { name: 'Total Bangun Persada', logo: '/clients/total-bangun-persada.png' },
-  { name: 'Shin Sam-Plus', logo: '/clients/shin-sam-plus.png' },
-  { name: 'Angkasa Bumi Cemerlang', logo: '/clients/angkasa-bumi.png' },
-  { name: 'Busana Apparel Group', logo: '/clients/busana-apparel.png' },
-  { name: 'Sika', logo: '/clients/sika.png' },
-  { name: 'PT. Inti Polymeta', logo: '/clients/inti-polymeta.png' },
-  { name: 'Unilever', logo: '/clients/unilever.png' },
-  { name: 'PT. Karya Inti Karton', logo: '/clients/karya-inti-karton.png' },
+const highlights = [
+  { icon: 'i-lucide-badge-check', title: 'Kualitas Terjamin', text: 'Produk dan pekerjaan sesuai spesifikasi dan standar industri.' },
+  { icon: 'i-lucide-hard-hat', title: 'Mengutamakan K3', text: 'Keselamatan dan kesehatan kerja di setiap lokasi proyek.' },
+  { icon: 'i-lucide-users', title: 'Tim Profesional', text: 'Tenaga ahli yang terampil, cermat, dan berpengalaman.' }
 ]
 
+const productGroups = computed(() =>
+  (Object.keys(productGroupLabels) as ProductGroup[]).map(group => ({
+    group,
+    label: productGroupLabels[group],
+    titles: products.value.filter(p => p.group === group).map(p => p.title)
+  }))
+)
+
+const aboutPhotos = computed(() =>
+  groups.value
+    .filter(g => g.category === 'project')
+    .flatMap(g => g.photos)
+    .filter(p => p.caption && !p.isFeatured)
+    .slice(0, 2)
+)
+
 useSeoMeta({
-  title: settings.value?.site_name || 'PT. Air Bersinergi',
-  description: settings.value?.site_description,
+  title: () => settings.value?.siteName ?? 'PT. Anugerah Insan Ridho Bersinergi',
+  description: () => settings.value?.siteDescription ?? undefined
 })
 
 useHead({
-  link: [
-    { rel: 'preload', as: 'image', href: '/hero-hd.jpg', fetchpriority: 'high' },
-  ],
+  link: [{ rel: 'preload', as: 'image', href: '/hero-hd.jpg', fetchpriority: 'high' }]
 })
 </script>
 
 <template>
   <div>
-    <!-- Hero Section -->
-    <section class="relative min-h-[80vh] lg:min-h-[92vh] flex items-center text-primary-foreground overflow-hidden isolate">
+    <!-- Hero -->
+    <section class="relative isolate flex min-h-svh items-end overflow-hidden bg-ink-950 text-white">
       <img
         src="/hero-hd.jpg"
         alt="Kompleks industri dengan perpipaan dan infrastruktur pabrik"
-        class="absolute inset-0 h-full w-full object-cover object-[center_42%] scale-105 saturate-[0.85] contrast-[1.05]"
+        class="absolute inset-0 -z-20 size-full object-cover object-[center_40%]"
         fetchpriority="high"
-        decoding="async"
-      />
-      <div class="absolute inset-0 bg-black/25" />
-      <div class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/30" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
-      <div class="pointer-events-none absolute -top-28 -right-28 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
-      <div class="pointer-events-none absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-primary/25 blur-3xl" />
+      >
+      <div class="absolute inset-0 -z-10 bg-linear-to-r from-ink-950 via-ink-950/85 to-ink-950/20" />
+      <div class="absolute inset-0 -z-10 bg-linear-to-t from-ink-950 via-transparent to-ink-950/60" />
+      <div class="absolute inset-0 -z-10 bg-blueprint opacity-60" />
 
-      <div class="container relative z-10 py-24 lg:py-32">
-        <div class="max-w-3xl">
-          <UiBadge variant="secondary" class="mb-5 shadow-lg">General Contractor & Supplier</UiBadge>
-          <h1 class="text-4xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] mb-6 drop-shadow-md">
-            {{ heroContent?.title || 'Solusi Terpercaya untuk Kebutuhan Industri Anda' }}
-          </h1>
-          <p class="text-lg lg:text-xl text-primary-foreground/95 mb-9 leading-relaxed max-w-2xl drop-shadow-sm">
-            {{ heroContent?.subtitle || 'PT. Anugerah Insan Ridho Bersinergi bergerak dibidang pengadaan barang dan jasa dalam bidang industri, kontruksi, mekanikal, elektrikal, dan engineering.' }}
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <NuxtLink to="/kontak">
-              <UiButton size="lg" variant="secondary" class="shadow-lg">Hubungi Kami</UiButton>
-            </NuxtLink>
-            <NuxtLink to="/layanan">
-              <UiButton size="lg" variant="ghost" class="border border-white/40 bg-white/5 text-white backdrop-blur-sm hover:bg-white/15 hover:text-white">
-                Lihat Layanan
-              </UiButton>
-            </NuxtLink>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats -->
-    <section class="py-12 border-b">
-      <div class="container">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <p class="text-3xl font-bold text-primary">17+</p>
-            <p class="text-sm text-muted-foreground mt-1">Proyek Selesai</p>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-primary">6+</p>
-            <p class="text-sm text-muted-foreground mt-1">Bidang Keahlian</p>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-primary">10+</p>
-            <p class="text-sm text-muted-foreground mt-1">Klien Puas</p>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-primary">100%</p>
-            <p class="text-sm text-muted-foreground mt-1">Komitmen K3</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Preview -->
-    <section class="py-20">
-      <div class="container">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <UiBadge class="mb-4">Tentang Kami</UiBadge>
-            <h2 class="text-3xl font-bold mb-4">{{ aboutContent?.title || 'Perusahaan yang Produktif, Tangguh dan Terpercaya' }}</h2>
-            <p class="text-muted-foreground leading-relaxed mb-6">
-              {{ aboutContent?.body || 'PT. Anugerah Insan Ridho Bersinergi merupakan perusahaan General Contractor and Supplier yang bergerak dibidang pengadaan barang dan jasa dalam bidang industri, kontruksi, mekanikal, elektrikal, dan engineering.' }}
+      <UContainer class="w-full pt-40 pb-12 md:pb-16">
+        <div class="max-w-4xl">
+          <div class="flex items-center gap-3">
+            <span class="h-0.5 w-10 bg-secondary" />
+            <p class="font-display text-sm font-semibold tracking-[0.3em] text-white/80 uppercase">
+              General Contractor & Supplier
             </p>
-            <NuxtLink to="/tentang-kami">
-              <UiButton variant="outline">Selengkapnya</UiButton>
-            </NuxtLink>
           </div>
-          <SectionsAboutHighlights />
+          <h1 class="mt-6 font-display text-5xl leading-[0.92] font-bold tracking-tight uppercase sm:text-6xl md:text-7xl lg:text-8xl">
+            {{ hero?.title || 'Solusi Terpercaya untuk Kebutuhan Industri Anda' }}
+          </h1>
+          <p class="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
+            {{ hero?.subtitle }}
+          </p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <UButton to="/kontak" color="secondary" size="xl" trailing-icon="i-lucide-arrow-right">
+              Minta Penawaran
+            </UButton>
+            <UButton
+              to="/portofolio"
+              size="xl"
+              color="neutral"
+              variant="outline"
+              class="bg-white/5 text-white ring-white/30 backdrop-blur-sm hover:bg-white/15"
+            >
+              Lihat Proyek
+            </UButton>
+          </div>
         </div>
-      </div>
+
+        <dl class="mt-16 grid grid-cols-2 border-t border-white/15 md:mt-24 md:grid-cols-4">
+          <div
+            v-for="(stat, i) in stats"
+            :key="stat.label"
+            class="py-6 pr-4 md:py-8"
+            :class="i > 0 && 'md:border-l md:border-white/15 md:pl-8'"
+          >
+            <dt class="text-xs font-semibold tracking-widest text-slate-400 uppercase">
+              {{ stat.label }}
+            </dt>
+            <dd class="mt-2 font-display text-4xl font-bold md:text-5xl">
+              {{ stat.value }}
+            </dd>
+          </div>
+        </dl>
+      </UContainer>
+    </section>
+
+    <!-- About -->
+    <section class="py-24 md:py-32">
+      <UContainer class="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+        <div>
+          <SectionHeading eyebrow="Tentang Kami" :title="about?.title || 'Perusahaan yang Produktif, Tangguh dan Terpercaya'" />
+          <p class="reveal mt-6 text-lg leading-relaxed text-slate-600">
+            {{ about?.body }}
+          </p>
+          <ul class="mt-10 space-y-6">
+            <li v-for="h in highlights" :key="h.title" class="reveal flex gap-5">
+              <span class="flex size-12 shrink-0 items-center justify-center border-2 border-primary text-primary">
+                <UIcon :name="h.icon" class="size-6" />
+              </span>
+              <div>
+                <p class="font-display text-xl font-bold tracking-wide text-slate-900 uppercase">
+                  {{ h.title }}
+                </p>
+                <p class="mt-1 text-slate-600">
+                  {{ h.text }}
+                </p>
+              </div>
+            </li>
+          </ul>
+          <UButton to="/tentang-kami" variant="link" class="reveal mt-8 px-0 text-base" trailing-icon="i-lucide-arrow-right">
+            Selengkapnya tentang kami
+          </UButton>
+        </div>
+
+        <div class="reveal relative grid grid-cols-2 gap-4">
+          <img
+            v-for="(photo, i) in aboutPhotos"
+            :key="photo.id"
+            :src="photo.imageUrl"
+            :alt="photo.alt || ''"
+            loading="lazy"
+            class="aspect-[3/4] w-full object-cover"
+            :class="i === 1 && 'mt-16'"
+          >
+          <div class="absolute -bottom-6 left-6 bg-secondary px-6 py-5 text-white shadow-xl md:left-10">
+            <p class="font-display text-4xl leading-none font-bold">
+              6
+            </p>
+            <p class="mt-1 text-xs font-semibold tracking-widest uppercase">
+              Bidang usaha terintegrasi
+            </p>
+          </div>
+        </div>
+      </UContainer>
     </section>
 
     <!-- Services -->
-    <section class="py-20 bg-muted/50">
-      <div class="container">
-        <div class="text-center mb-12">
-          <UiBadge class="mb-4">Layanan Kami</UiBadge>
-          <h2 class="text-3xl font-bold">Bidang Keahlian</h2>
-          <p class="text-muted-foreground mt-2 max-w-2xl mx-auto">Kami siap memberikan produk dan jasa berdasarkan bidang yang kami tekuni</p>
+    <section class="bg-slate-50 py-24 md:py-32">
+      <UContainer>
+        <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading
+            eyebrow="Layanan Kami"
+            title="Bidang Keahlian"
+            description="Produk dan jasa sesuai bidang yang kami tekuni maupun kebutuhan spesifik customer."
+          />
+          <UButton to="/layanan" variant="outline" trailing-icon="i-lucide-arrow-right" class="reveal shrink-0">
+            Semua Layanan
+          </UButton>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
-          <SectionsServiceExpertiseCard
-            v-for="(service, index) in services"
+        <div class="mt-12 grid gap-px bg-slate-200 sm:grid-cols-2 lg:grid-cols-3">
+          <ServiceCard
+            v-for="(service, i) in services"
             :key="service.id"
-            :service="service"
-            :index="index"
+            :index="i"
+            :title="service.title"
+            :description="service.description"
+            :icon="service.icon"
+            class="border-0"
           />
         </div>
-        <div class="text-center mt-8">
-          <NuxtLink to="/layanan">
-            <UiButton variant="outline">Lihat Semua Layanan</UiButton>
-          </NuxtLink>
-        </div>
-      </div>
+      </UContainer>
     </section>
 
-    <SectionsProductCatalog />
-
-    <!-- Portfolio -->
-    <section class="py-20 bg-muted/30">
-      <div class="container">
-        <div class="text-center mb-12">
-          <UiBadge class="mb-4">Portofolio</UiBadge>
-          <h2 class="text-3xl md:text-4xl font-bold">Proyek Terbaru</h2>
-          <p class="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            Dokumentasi pekerjaan proyek, service, dan pengadaan yang telah kami kerjakan
-          </p>
-        </div>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7 scroll-fade-stagger">
+    <!-- Products -->
+    <section class="relative isolate overflow-hidden bg-ink-950 py-24 text-white md:py-32">
+      <div class="absolute inset-0 -z-10 bg-blueprint" />
+      <UContainer>
+        <SectionHeading
+          eyebrow="Pengadaan"
+          title="Katalog Produk"
+          description="Mesin, material, dan perlengkapan K3 untuk operasional pabrik dan proyek konstruksi."
+          dark
+        />
+        <div class="mt-12 grid gap-px bg-white/10 md:grid-cols-3">
           <NuxtLink
-            v-for="project in featuredPortfolioProjects"
-            :key="`${project.slug}-${project.title}`"
-            :to="`/portofolio#${project.slug}`"
-            class="group block rounded-2xl border bg-card shadow-md ring-1 ring-border/60 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5 hover:ring-primary/25"
+            v-for="(g, i) in productGroups"
+            :key="g.group"
+            :to="`/layanan#katalog`"
+            class="reveal group flex flex-col bg-ink-950 p-8 transition-colors hover:bg-primary"
           >
-            <div class="relative aspect-[4/3] overflow-hidden bg-muted">
-              <img
-                :src="project.image"
-                :alt="project.alt"
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-              <UiBadge
-                :class="project.category === 'service' ? 'bg-secondary text-secondary-foreground' : 'bg-primary text-primary-foreground'"
-                class="absolute top-3 left-3 shadow-md"
+            <span class="font-display text-sm font-semibold tracking-widest text-secondary group-hover:text-white">
+              {{ String(i + 1).padStart(2, '0') }}
+            </span>
+            <h3 class="mt-4 font-display text-3xl leading-none font-bold uppercase">
+              {{ g.label }}
+            </h3>
+            <ul class="mt-6 space-y-2 text-sm text-slate-400 group-hover:text-cobalt-100">
+              <li v-for="t in g.titles" :key="t" class="flex items-center gap-2">
+                <UIcon name="i-lucide-chevron-right" class="size-3.5 text-secondary group-hover:text-white" />
+                {{ t }}
+              </li>
+            </ul>
+            <span class="mt-auto flex items-center gap-2 pt-8 text-sm font-semibold">
+              Lihat katalog
+              <UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-1" />
+            </span>
+          </NuxtLink>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Featured projects -->
+    <section class="py-24 md:py-32">
+      <UContainer>
+        <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading
+            eyebrow="Portofolio"
+            title="Proyek Terbaru"
+            description="Dokumentasi pekerjaan proyek, service, dan pengadaan yang telah kami selesaikan."
+          />
+          <UButton to="/portofolio" variant="outline" trailing-icon="i-lucide-arrow-right" class="reveal shrink-0">
+            Semua Proyek
+          </UButton>
+        </div>
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <NuxtLink
+            v-for="(project, i) in featured"
+            :key="project.id"
+            to="/portofolio"
+            class="reveal group relative block overflow-hidden bg-slate-200"
+            :class="i === 0 ? 'aspect-square sm:col-span-2 sm:aspect-[2/1] lg:row-span-2 lg:aspect-auto' : 'aspect-square'"
+          >
+            <img
+              :src="project.imageUrl"
+              :alt="project.alt || project.caption || ''"
+              loading="lazy"
+              class="size-full object-cover transition-transform duration-700 group-hover:scale-110"
+            >
+            <div class="absolute inset-0 bg-linear-to-t from-ink-950/95 via-ink-950/30 to-transparent" />
+            <div class="absolute inset-x-0 bottom-0 p-5 md:p-6">
+              <span class="bg-secondary px-2 py-0.5 font-display text-xs font-semibold tracking-widest text-white uppercase">
+                {{ portfolioCategoryLabels[project.category] }}
+              </span>
+              <h3
+                class="mt-3 font-display leading-tight font-bold text-white uppercase"
+                :class="i === 0 ? 'text-2xl md:text-4xl' : 'text-lg'"
               >
-                {{ categoryLabel(project.category) }}
-              </UiBadge>
-              <div class="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                <h3 class="text-white font-semibold text-sm md:text-base leading-snug line-clamp-2">
-                  {{ project.title }}
-                </h3>
-                <div
-                  :class="project.category === 'service' ? 'bg-secondary' : 'bg-primary'"
-                  class="mt-3 h-0.5 w-8 rounded-full transition-all duration-500 group-hover:w-14"
-                />
-              </div>
+                {{ project.caption || project.alt }}
+              </h3>
             </div>
           </NuxtLink>
         </div>
-
-        <div class="text-center mt-10">
-          <NuxtLink to="/portofolio">
-            <UiButton size="lg" variant="outline">Lihat Semua Proyek</UiButton>
-          </NuxtLink>
-        </div>
-      </div>
+      </UContainer>
     </section>
 
     <!-- Clients -->
-    <section class="py-14 md:py-16 bg-background overflow-hidden">
-      <div class="container">
-        <div class="text-center mb-8 md:mb-10">
-          <UiBadge class="mb-4">Klien Kami</UiBadge>
-          <h2 class="text-3xl font-bold">Dipercaya Oleh</h2>
-          <p class="text-muted-foreground mt-2">Perusahaan-perusahaan yang telah bekerja sama dengan kami</p>
-        </div>
-        <SectionsClientLogoMarquee :clients="clients" />
+    <section class="border-t border-slate-200 bg-white py-20">
+      <UContainer>
+        <SectionHeading eyebrow="Klien Kami" title="Dipercaya Oleh" align="center" />
+      </UContainer>
+      <div class="mt-12">
+        <ClientMarquee />
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-20 bg-primary text-primary-foreground">
-      <div class="container text-center">
-        <h2 class="text-3xl font-bold mb-4">Siap Bekerja Sama?</h2>
-        <p class="text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-          Hubungi kami untuk konsultasi dan penawaran terbaik untuk kebutuhan proyek Anda
-        </p>
-        <NuxtLink to="/kontak">
-          <UiButton size="lg" variant="secondary">Hubungi Kami Sekarang</UiButton>
-        </NuxtLink>
-      </div>
-    </section>
+    <CtaBand />
   </div>
 </template>

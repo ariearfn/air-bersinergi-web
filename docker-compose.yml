@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: airbersinergi
+      POSTGRES_PASSWORD: airbersinergi
+      POSTGRES_DB: airbersinergi
+    ports:
+      # Host port 5435 avoids clashing with other local Postgres instances
+      - '${POSTGRES_HOST_PORT:-5435}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U airbersinergi -d airbersinergi']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
