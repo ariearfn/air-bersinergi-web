@@ -60,19 +60,19 @@ export const portfolioSections: PortfolioSection[] = [
     layout: 'gallery',
     images: [
       {
-        src: '/portfolio/road-construction/01.png',
+        src: '/portfolio/road-construction/01.webp',
         alt: 'Pengecoran beton jalan dengan truk mixer',
       },
       {
-        src: '/portfolio/road-construction/02.png',
+        src: '/portfolio/road-construction/02.webp',
         alt: 'Tim pekerja meratakan permukaan beton jalan',
       },
       {
-        src: '/portfolio/road-construction/03.png',
+        src: '/portfolio/road-construction/03.webp',
         alt: 'Proses screeding dan finishing jalan beton',
       },
       {
-        src: '/portfolio/road-construction/04.png',
+        src: '/portfolio/road-construction/04.webp',
         alt: 'Pengerjaan jalan beton pada malam hari',
       },
     ],
@@ -85,32 +85,32 @@ export const portfolioSections: PortfolioSection[] = [
     layout: 'caption-grid',
     images: [
       {
-        src: '/portfolio/projects/epoxy-flooring.png',
+        src: '/portfolio/projects/epoxy-flooring.webp',
         alt: 'Epoxy Flooring Project',
         caption: 'Epoxy Flooring Project',
       },
       {
-        src: '/portfolio/projects/building-waterproofing.png',
+        src: '/portfolio/projects/building-waterproofing.webp',
         alt: 'Building Waterproofing Project',
         caption: 'Building Waterproofing Project',
       },
       {
-        src: '/portfolio/projects/fabrikasi-baja.png',
+        src: '/portfolio/projects/fabrikasi-baja.webp',
         alt: 'Fabrikasi Baja',
         caption: 'Fabrikasi Baja',
       },
       {
-        src: '/portfolio/projects/hand-railing.png',
+        src: '/portfolio/projects/hand-railing.webp',
         alt: 'Hand Railing Project',
         caption: 'Hand Railing Project',
       },
       {
-        src: '/portfolio/projects/air-tank-compressor-installation.png',
+        src: '/portfolio/projects/air-tank-compressor-installation.webp',
         alt: 'Air Tank Compressor Installation Project',
         caption: 'Air Tank Compressor Installation Project',
       },
       {
-        src: '/portfolio/projects/air-compressor-piping-installation.png',
+        src: '/portfolio/projects/air-compressor-piping-installation.webp',
         alt: 'Air Compressor Piping Installation Project',
         caption: 'Air Compressor Piping Installation Project',
       },
@@ -124,27 +124,27 @@ export const portfolioSections: PortfolioSection[] = [
     layout: 'caption-grid',
     images: [
       {
-        src: '/portfolio/projects/service-forklift.png',
+        src: '/portfolio/projects/service-forklift.webp',
         alt: 'Service Forklift',
         caption: 'Service Forklift',
       },
       {
-        src: '/portfolio/projects/service-hydraulic-50-ton.png',
+        src: '/portfolio/projects/service-hydraulic-50-ton.webp',
         alt: 'Service Hydraulic 50 Ton Project',
         caption: 'Service Hydraulic 50 Ton Project',
       },
       {
-        src: '/portfolio/projects/service-hydraulic-press-5-ton.png',
+        src: '/portfolio/projects/service-hydraulic-press-5-ton.webp',
         alt: 'Service Mesin Hydraulic Press 5 Ton Project',
         caption: 'Service Mesin Hydraulic Press 5 Ton Project',
       },
       {
-        src: '/portfolio/projects/service-genset-45-kva-silent-type.png',
+        src: '/portfolio/projects/service-genset-45-kva-silent-type.webp',
         alt: 'Service Genset 45 KVA Silent Type',
         caption: 'Service Genset 45 KVA Silent Type',
       },
       {
-        src: '/portfolio/projects/cooling-tower-filler-replacement.png',
+        src: '/portfolio/projects/cooling-tower-filler-replacement.webp',
         alt: 'Cooling Tower Filler Replacement Project',
         caption: 'Cooling Tower Filler Replacement Project',
       },
@@ -158,32 +158,32 @@ export const portfolioSections: PortfolioSection[] = [
     layout: 'caption-grid',
     images: [
       {
-        src: '/portfolio/projects/pengadaan-centrifugal-blower-fan.png',
+        src: '/portfolio/projects/pengadaan-centrifugal-blower-fan.webp',
         alt: 'Pengadaan Centrifugal Blower Fan',
         caption: 'Pengadaan Centrifugal Blower Fan',
       },
       {
-        src: '/portfolio/projects/pengadaan-dust-collector.png',
+        src: '/portfolio/projects/pengadaan-dust-collector.webp',
         alt: 'Pengadaan Dust Collector',
         caption: 'Pengadaan Dust Collector',
       },
       {
-        src: '/portfolio/projects/pengadaan-electric-ball-valve-motorized.png',
+        src: '/portfolio/projects/pengadaan-electric-ball-valve-motorized.webp',
         alt: 'Pengadaan Electric Ball Valve Motorized',
         caption: 'Pengadaan Electric Ball Valve Motorized',
       },
       {
-        src: '/portfolio/projects/pengadaan-foot-valve.png',
+        src: '/portfolio/projects/pengadaan-foot-valve.webp',
         alt: 'Pengadaan Foot Valve',
         caption: 'Pengadaan Foot Valve',
       },
       {
-        src: '/portfolio/projects/pengadaan-sand-blasting.png',
+        src: '/portfolio/projects/pengadaan-sand-blasting.webp',
         alt: 'Pengadaan Sand Blasting',
         caption: 'Pengadaan Sand Blasting',
       },
       {
-        src: '/portfolio/projects/pengadaan-pagar-brc.png',
+        src: '/portfolio/projects/pengadaan-pagar-brc.webp',
         alt: 'Pengadaan Pagar BRC',
         caption: 'Pengadaan Pagar BRC',
       },
@@ -216,42 +216,42 @@ export const featuredPortfolioProjects: FeaturedPortfolioProject[] = [
     slug: 'road-construction-projects',
     title: 'Road Construction Projects',
     category: 'project',
-    image: '/portfolio/road-construction/01.png',
+    image: '/portfolio/road-construction/01.webp',
     alt: 'Pengecoran beton jalan dengan truk mixer',
   },
   {
     slug: 'construction-installation-projects',
     title: 'Air Compressor Piping Installation',
     category: 'project',
-    image: '/portfolio/projects/air-compressor-piping-installation.png',
+    image: '/portfolio/projects/air-compressor-piping-installation.webp',
     alt: 'Air Compressor Piping Installation Project',
   },
   {
     slug: 'construction-installation-projects',
     title: 'Epoxy Flooring Project',
     category: 'project',
-    image: '/portfolio/projects/epoxy-flooring.png',
+    image: '/portfolio/projects/epoxy-flooring.webp',
     alt: 'Epoxy Flooring Project',
   },
   {
     slug: 'service-maintenance-projects',
     title: 'Service Hydraulic 50 Ton',
     category: 'service',
-    image: '/portfolio/projects/service-hydraulic-50-ton.png',
+    image: '/portfolio/projects/service-hydraulic-50-ton.webp',
     alt: 'Service Hydraulic 50 Ton Project',
   },
   {
     slug: 'service-maintenance-projects',
     title: 'Cooling Tower Filler Replacement',
     category: 'service',
-    image: '/portfolio/projects/cooling-tower-filler-replacement.png',
+    image: '/portfolio/projects/cooling-tower-filler-replacement.webp',
     alt: 'Cooling Tower Filler Replacement Project',
   },
   {
     slug: 'pengadaan-supply-projects',
     title: 'Pengadaan Centrifugal Blower Fan',
     category: 'pengadaan',
-    image: '/portfolio/projects/pengadaan-centrifugal-blower-fan.png',
+    image: '/portfolio/projects/pengadaan-centrifugal-blower-fan.webp',
     alt: 'Pengadaan Centrifugal Blower Fan',
   },
 ]
