@@ -127,7 +127,7 @@ async function seedProducts() {
         summary: product.description,
         intro: detail?.intro,
         group: product.group,
-        catalogImage: detail?.catalogImage,
+        catalogImage: detail?.catalogImage ?? product.coverImage,
         sortOrder: i + 1
       })
       .returning({ id: productCategories.id })

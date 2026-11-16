@@ -12,6 +12,7 @@ export interface CatalogProduct {
   accent: 'primary' | 'secondary'
   group: CatalogGroupId
   detailSlug?: string
+  coverImage?: string
 }
 
 export const catalogGroups: CatalogGroup[] = [
@@ -38,12 +39,14 @@ export const catalogProducts: CatalogProduct[] = [
     description: 'Genset silent type dan open type untuk kebutuhan power backup industri, konstruksi, dan proyek skala menengah hingga besar.',
     accent: 'secondary',
     group: 'machinery',
+    coverImage: '/portfolio/projects/service-genset-45-kva-silent-type.webp',
   },
   {
     title: 'Construction Material',
     description: 'Material konstruksi berkualitas untuk kebutuhan proyek bangunan, infrastruktur, dan pengembangan fasilitas industri.',
     accent: 'primary',
     group: 'materials',
+    coverImage: '/portfolio/road-construction/03.webp',
   },
   {
     title: 'Safety Equipment',

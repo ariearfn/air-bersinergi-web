@@ -16,6 +16,8 @@ const visible = computed(() =>
 )
 
 const coverOf = (c: Category) => c.items.find(i => i.imageUrl)?.imageUrl ?? c.catalogImage
+/** Item images are cut-out product shots; a category without them falls back to a site photo. */
+const hasProductShots = (c: Category) => c.items.some(i => i.imageUrl)
 
 const selected = ref<Category | null>(null)
 const open = computed({
@@ -59,7 +61,8 @@ const open = computed({
             :src="coverOf(category)!"
             :alt="category.title"
             loading="lazy"
-            class="size-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
+            class="size-full transition-transform duration-500 group-hover:scale-105"
+            :class="hasProductShots(category) ? 'object-contain p-6' : 'object-cover'"
           >
           <div v-else class="flex size-full items-center justify-center bg-blueprint bg-ink-900">
             <UIcon name="i-lucide-package" class="size-14 text-white/30" />
@@ -87,12 +90,12 @@ const open = computed({
       v-model:open="open"
       :title="selected?.title"
       :description="selected?.subtitle ?? undefined"
-      :ui="{ content: 'max-w-2xl' }"
+      :ui="{ content: 'sm:max-w-2xl' }"
     >
       <template #body>
         <div v-if="selected" class="space-y-6">
-          <p v-if="selected.intro" class="leading-relaxed text-slate-600">
-            {{ selected.intro }}
+          <p v-if="selected.intro || selected.summary" class="leading-relaxed text-slate-600">
+            {{ selected.intro || selected.summary }}
           </p>
 
           <img

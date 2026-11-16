@@ -49,6 +49,27 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   }, { passive: true })
 
-  nuxtApp.hook('page:finish', () => requestAnimationFrame(scan))
-  nuxtApp.hook('app:mounted', () => requestAnimationFrame(scan))
+  // Touching classes before hydration finishes causes class mismatches.
+  nuxtApp.hook('page:finish', () => {
+    if (!nuxtApp.isHydrating) requestAnimationFrame(scan)
+  })
+  onNuxtReady(() => {
+    requestAnimationFrame(scan)
+
+    // Elements added later (filters, v-if swaps) were never observed by the last scan.
+    let pending = false
+    new MutationObserver((mutations) => {
+      if (pending) return
+      const added = mutations.some(m => [...m.addedNodes].some(n =>
+        n instanceof Element && (n.matches('.reveal:not(.is-visible)') || n.querySelector('.reveal:not(.is-visible)'))
+      ))
+      if (added) {
+        pending = true
+        requestAnimationFrame(() => {
+          pending = false
+          scan()
+        })
+      }
+    }).observe(document.body, { childList: true, subtree: true })
+  })
 })

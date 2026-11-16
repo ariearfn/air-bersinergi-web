@@ -6,7 +6,7 @@ const photos = computed(() =>
     ...p,
     category: g.category,
     groupTitle: g.title,
-    label: p.caption || g.title
+    label: p.caption || p.alt || g.title
   })))
 )
 
