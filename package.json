@@ -5,30 +5,30 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx server/db/seed.ts"
   },
   "dependencies": {
-    "@nuxtjs/color-mode": "^4.0.0",
-    "@nuxtjs/supabase": "^2.0.9",
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "@vueuse/core": "^14.3.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-vue-next": "^1.0.0",
-    "nuxt": "^4.4.6",
-    "radix-vue": "^1.9.17",
-    "tailwind-merge": "^3.6.0",
-    "vue": "^3.5.34",
-    "vue-router": "^5.0.7"
+    "@iconify-json/lucide": "^1.2.147",
+    "@iconify-json/simple-icons": "^1.2.100",
+    "@nuxt/ui": "^4.12.0",
+    "better-auth": "^1.4.5",
+    "drizzle-orm": "^0.45.4",
+    "nuxt": "^4.6.3",
+    "postgres": "^3.4.7",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "autoprefixer": "^10.5.0",
-    "postcss": "^8.5.15",
-    "tailwindcss": "^3.4.19",
-    "tailwindcss-animate": "^1.0.7",
-    "typescript": "^6.0.3"
+    "@types/node": "^24.10.0",
+    "drizzle-kit": "^0.31.7",
+    "tsx": "^4.20.6",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.13"
   }
 }
